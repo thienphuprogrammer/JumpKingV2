@@ -94,7 +94,7 @@ void MainObject_Show(MainObject* obj, SDL_Renderer* des) {
 	obj->UpdateImagePlayer(obj, des);
 	if (obj->input_type_.left_ == 1 ||
 		obj->input_type_.right_ == 1) {
-		if (!obj->ready_jump_ && obj->on_ground_)
+		if (!obj->ready_jump_ && obj->on_ground_ && !obj->jump_left && !obj->jump_right)
 		{
 			obj->frame_++;
 		}

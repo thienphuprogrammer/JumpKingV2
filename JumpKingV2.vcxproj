@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)SDL2\SDL2\include;$(SolutionDir)SDL2\SDL2_image\include;$(SolutionDir)SDL2\SDL2_mixer\include;$(SolutionDir)SDL2\SDL2_ttf\include;D:\Workspace\Project\library\mysys64\mingw64\include\glib-2.0;D:\Workspace\Project\library\mysys64\mingw64\lib\glib-2.0\include;D:\Workspace\Project\library\mysys64\mingw64\include\libxml2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2\lib\x64;$(SolutionDir)SDL2\SDL2_image\lib\x64;$(SolutionDir)SDL2\SDL2_mixer\lib\x64;$(SolutionDir)SDL2\SDL2_ttf\lib\x64;D:\Workspace\Project\library\mysys64\mingw64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)SDL2\SDL2\include;$(SolutionDir)SDL2\SDL2_image\include;$(SolutionDir)SDL2\SDL2_mixer\include;$(SolutionDir)SDL2\SDL2_ttf\include;$(SolutionDir)lib\glib\include\glib-2.0;$(SolutionDir)lib\glib\lib\glib-2.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2\lib\x64;$(SolutionDir)SDL2\SDL2_image\lib\x64;$(SolutionDir)SDL2\SDL2_mixer\lib\x64;$(SolutionDir)SDL2\SDL2_ttf\lib\x64;$(SolutionDir)lib\glib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -122,7 +122,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libxml2.dll.a;libglib-2.0.dll.a;SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libglib-2.0.dll.a;SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,6 +151,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="MainObject.c" />
     <ClCompile Include="MapParser.cpp" />
+    <ClCompile Include="TextObject.c" />
     <ClCompile Include="TileLayer.c" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
     <ClCompile Include="tinyxml\tinyxml.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Layer.h" />
     <ClInclude Include="MainObject.h" />
     <ClInclude Include="MapParser.h" />
+    <ClInclude Include="TextObject.h" />
     <ClInclude Include="TileLayer.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />

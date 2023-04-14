@@ -4,6 +4,15 @@
 #include "MainObject.h"
 #include "ImpTimer.h"
 #include "GameMap.h"
+#include "TextObject.h"
+
+const int MENU_START = 0;
+const int MENU_QUIT = 1;
+const int RENDER_DRAW_COLOR = 0xff;
+
+BaseObject g_background;
+TTF_Font* g_font = NULL;
+BaseObject g_background_menu;
 
 #ifdef __cplusplus
 extern "C"
@@ -24,11 +33,13 @@ bool InitData()
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    g_windows = SDL_CreateWindow("Game Cpp SDL 2.0",
+    g_windows = SDL_CreateWindow("Game jump king dream",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        SCREEN_WIDTH, SCREEN_HEIGHT,
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN);
+
     if (g_windows == NULL) success = false;
     else
     {
@@ -49,15 +60,24 @@ bool InitData()
             }
         }
     }
+
+    //Init TTF
+    if (TTF_Init() < 0)
+        return false;
+    //size
+    g_font = TTF_OpenFont("fonts/EnterCommand.ttf", 70);
     return success;
 }
-
-BaseObject g_background;
 
 bool LoadBackground()
 {
     bool ret = g_background.LoadImg(&g_background, "img//BG.png", g_screen);
     if (ret == false) return false;
+    bool ret_menu = g_background_menu.LoadImg(&g_background_menu, "img/background_menu.jpg", g_screen);
+    if (ret_menu == false)
+        return false;
+
+
     return true;
 }
 
@@ -65,23 +85,122 @@ void close()
 {
     g_background.Free(&g_background);
     g_background.Destroy(&g_background);
+    g_background_menu.Free(&g_background_menu);
+
     SDL_DestroyRenderer(g_screen);
     g_screen = NULL;
 
     SDL_DestroyWindow(g_windows);
     g_windows = NULL;
+    TTF_CloseFont(g_font);
+
 
     IMG_Quit();
     SDL_Quit();
 }
 
+int selectMenu()
+{
+
+    TextObject text_start_ = TextObject_Init(); //TextObject lop doi tuong
+    TextObject text_quit_ = TextObject_Init(); //TextObject lop doi tuong
+
+
+    TextObject_SetText(&text_start_, "Start!!");
+    TextObject_SetText(&text_quit_, "Quit!!");
+    text_start_.SetColorByType(&text_start_, BLACK_TEXT);
+    text_start_.SetColorByType(&text_quit_, BLACK_TEXT);
+
+    int mouseX_button = 0, mouseY_button = 0, mouseX = 0, mouseY = 0;
+
+    bool running = true;
+    while (running)
+    {
+        SDL_SetRenderDrawColor(g_screen, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR, RENDER_DRAW_COLOR);
+        SDL_RenderClear(g_screen);
+
+        g_background_menu.Render(&g_background_menu, g_screen, NULL);
+
+        TextObject_loadFromRenderedText(&text_start_, g_font, g_screen);
+        text_start_.RenderText(&text_start_, g_screen, 840, 220, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+        TextObject_loadFromRenderedText(&text_quit_, g_font, g_screen);
+        text_quit_.RenderText(&text_quit_, g_screen, 852, 290, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+
+        while (SDL_PollEvent(&g_event) != 0)
+        {
+            switch (g_event.type)
+            {
+            case SDL_QUIT:
+                return MENU_QUIT;
+                break;
+
+            case SDL_MOUSEBUTTONDOWN:
+                mouseX_button = g_event.button.x;
+                mouseY_button = g_event.button.y;
+                {
+                    SDL_Point mouse_point_button = { mouseX_button, mouseY_button };
+                    SDL_Rect pos_text_start_button = TextObject_GetRect(&text_start_);
+                    SDL_Rect pos_text_quit_button = TextObject_GetRect(&text_quit_);
+                    if (SDL_PointInRect(&mouse_point_button, &pos_text_start_button))
+                    {
+                        TextObject_SetColorByType(&text_start_, RED_TEXT);
+                        return 0;
+                    }
+                    else if (SDL_PointInRect(&mouse_point_button, &pos_text_quit_button))
+                    {
+                        TextObject_SetColorByType(&text_quit_, RED_TEXT);
+                        return 1;
+                    }
+                }
+                break;
+
+            case SDL_MOUSEMOTION:
+                mouseX = g_event.button.x;
+                mouseY = g_event.button.y;
+                {
+                    SDL_Point mouse_motton = { mouseX, mouseY };
+                    SDL_Rect pose_text_start_motton = TextObject_GetRect(&text_start_);
+                    SDL_Rect pose_text_quit_motton = TextObject_GetRect(&text_quit_);
+                    if (SDL_PointInRect(&mouse_motton, &pose_text_start_motton))
+                    {
+                        TextObject_SetColorByType(&text_start_, RED_TEXT);
+                    }
+                    else
+                    {
+                        TextObject_SetColorByType(&text_start_, BLACK_TEXT);
+                    }
+                    if (SDL_PointInRect(&mouse_motton, &pose_text_quit_motton))
+                    {
+                        TextObject_SetColorByType(&text_quit_, RED_TEXT);
+                    }
+                    else
+                    {
+                        TextObject_SetColorByType(&text_quit_, BLACK_TEXT);
+                    }
+                }
+                break;
+            }
+        }
+
+        SDL_RenderPresent(g_screen);
+    }
+
+    return 0;
+}
+
+
 #undef main
 int main(int argc, char* argv[]) {
 
     ImpTimer fps_timer = ImpTimer_Create();
-    g_background = *BaseObject_Create();
 
     if (!InitData()) return -1;
+
+    g_background = *BaseObject_Create();
+    g_background_menu = *BaseObject_Create();
+
     if (!LoadBackground(&g_background)) return -1;
 
     MainObject p_player = MainObject_Create();
@@ -102,6 +221,10 @@ int main(int argc, char* argv[]) {
     //game_map.LoadTiles(&game_map, g_screen);
 
     bool is_quit = false;
+    if (selectMenu() == 1)
+    {
+        is_quit = true;
+    }
     while (!is_quit)
     {
         fps_timer.start(&fps_timer);
