@@ -4,6 +4,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "CommonFunction.h"
 #include "BaseObject.h"
+#include "GameMap.h"
 
 #define MAX_TILES 20
 
@@ -13,26 +14,26 @@ struct sTileMat
     BaseObject base_object;
 };
 
-typedef struct sGameMap GameMap;
+typedef struct sGameMap GameMapp;
 struct sGameMap
 {
     Map game_map_;
     TileMat tile_mat[MAX_TILES];
 
-    void (*Destroy) (GameMap*);
-    void (*LoadMap) (GameMap*, char*);
-    void (*LoadTiles) (GameMap*, SDL_Renderer*);
-    void (*DrawMap) (GameMap*, SDL_Renderer*);
-    Map (*GetMap) (GameMap*);
-    void (*SetMap) (GameMap* , const Map* gMap);
+    void (*Destroy) (GameMapp*);
+    void (*LoadMap) (GameMapp*, TileLayer*);
+    void (*LoadTiles) (GameMapp*, SDL_Renderer*);
+    void (*DrawMap) (GameMapp*, SDL_Renderer*, GameMap*);
+    Map (*GetMap) (GameMapp*);
+    void (*SetMap) (GameMapp*, const Map);
 };
 
-GameMap GameMap_Create();
-void GameMap_Destroy(GameMap* obj);
-void GameMap_LoadMap(GameMap* obj, char* name);
-void GameMap_LoadTiles(GameMap* obj, SDL_Renderer* screen);
-void GameMap_DrawMap(GameMap* obj, SDL_Renderer* des);
-Map GameMap_GetMap(GameMap* obj);
-void GameMap_SetMap(GameMap* obj, const Map* gMap);
+GameMapp GameMapp_Create();
+void GameMapp_Destroy(GameMapp* obj);
+void GameMapp_LoadMap(GameMapp* obj, TileLayer* TileMap);
+void GameMapp_LoadTiles(GameMapp* obj, SDL_Renderer* screen);
+void GameMapp_DrawMap(GameMapp* obj, SDL_Renderer* des, GameMap* LeMap);
+Map GameMapp_GetMap(GameMapp* obj);
+void GameMapp_SetMap(GameMapp* obj, const Map gMap);
 
 #endif // !GAME_MAP_H_

@@ -16,15 +16,21 @@ struct sBaseObject
 
 	bool (*LoadImg) (BaseObject*, const char*, SDL_Renderer*);
 	void (*Render) (BaseObject*, SDL_Renderer*, const SDL_Rect*);
+	void (*DrawTile)(SDL_Renderer*, SDL_Texture*, int, int, int, int, int, SDL_RendererFlip);
+
 	void (*Free) (BaseObject*);
 };
 
-BaseObject BaseObject_Create();
+BaseObject* BaseObject_Create();
 void BaseObject_Destroy(BaseObject* obj);
 void BaseObject_SetRect(BaseObject* obj, const int x, const int y);
+
 SDL_Rect BaseObject_GetRect(const BaseObject* obj);
 SDL_Texture* BaseObject_GetObject(const BaseObject* obj);
+
 bool BaseObject_LoadImg(BaseObject* obj, const char* path, SDL_Renderer* screen);
+void BaseObject_DrawTile(SDL_Renderer* des, SDL_Texture* texture, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip);
+
 void BaseObject_Render(BaseObject* obj, SDL_Renderer* des, const SDL_Rect* clip);
 void BaseObject_Free(BaseObject* obj);
 

@@ -13,42 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\source">
+      <UniqueIdentifier>{f89f61cb-4ce9-439d-b22b-3919a163eb2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\header">
+      <UniqueIdentifier>{44e18a7f-e7bb-4265-83f6-8c78670c04c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\source\vector">
+      <UniqueIdentifier>{fe17137d-0e96-46d1-b4ff-920e0fac53d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vender">
+      <UniqueIdentifier>{1c360273-f70f-4c12-afc0-025093bf1b64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\vender">
+      <UniqueIdentifier>{9cd628c4-b296-4b71-a61a-b11279eb910b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseObject.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonFunction.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game_map.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImpTimer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BaseObject.c">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonFunction.c">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="game_map.c">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpTimer.c">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
     <ClCompile Include="MainObject.c">
+      <Filter>Source Files\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TileLayer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\header</Filter>
     </ClInclude>
     <ClInclude Include="CommonFunction.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\header</Filter>
     </ClInclude>
     <ClInclude Include="game_map.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\header</Filter>
     </ClInclude>
     <ClInclude Include="ImpTimer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\header</Filter>
     </ClInclude>
     <ClInclude Include="MainObject.h">
+      <Filter>Header Files\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TileLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

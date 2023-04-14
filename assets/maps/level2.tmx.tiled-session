@@ -1,0 +1,132 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "level1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 186.3636363636365,
+                "y": 4951.515151515151
+            }
+        },
+        "level1.tmx#1": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#10": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#11": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#12": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#13": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#14": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#15": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#16": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#17": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#18": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#2": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#3": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#4": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#5": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#6": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#7": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#8": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#9": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#BG": {
+            "scaleInDock": 0.25
+        },
+        "level1.tmx#Bush (1)": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Bush (2)": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Bush (3)": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Bush (4)": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Crate": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Mushroom_1": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Mushroom_2": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Stone": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Tree_1": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Tree_2": {
+            "scaleInDock": 1
+        },
+        "level1.tmx#Tree_3": {
+            "scaleInDock": 1
+        },
+        "level2.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 524,
+                "y": 318.66666666666674
+            }
+        },
+        "level2.tmx#1": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "D:/Workspace/Project/F-Code/Game/SecondGame/assets/maps/New folder/png/Tiles",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "level2.tmx",
+        "level1.tmx"
+    ],
+    "project": "level2.tmx.tiled-project",
+    "recentFiles": [
+        "level2.tmx",
+        "level1.tmx"
+    ],
+    "tileset.embedInMap": true
+}

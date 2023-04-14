@@ -1,31 +1,34 @@
 #include "BaseObject.h"
 
-BaseObject BaseObject_Create()
+
+BaseObject* BaseObject_Create()
 {
-	BaseObject obj;
-	obj.p_object_ = NULL;
-	obj.rect_.x = 0;
-	obj.rect_.y = 0;
-	obj.rect_.w = 0;
-	obj.rect_.h = 0;
-	obj.Destroy = BaseObject_Destroy;
-	obj.SetRect = BaseObject_SetRect;
-	obj.GetRect = BaseObject_GetRect;
-	obj.GetObject = BaseObject_GetObject;
-	obj.LoadImg = BaseObject_LoadImg;
-	obj.Render = BaseObject_Render;
-	obj.Free = BaseObject_Free;
+	BaseObject* obj = (BaseObject*)malloc(sizeof(BaseObject));
+	obj->p_object_ = NULL;
+	obj->rect_.x = 0;
+	obj->rect_.y = 0;
+	obj->rect_.w = 0;
+	obj->rect_.h = 0;
+
+	obj->Destroy = BaseObject_Destroy;
+	obj->SetRect = BaseObject_SetRect;
+	obj->GetRect = BaseObject_GetRect;
+	obj->GetObject = BaseObject_GetObject;
+
+	obj->LoadImg = BaseObject_LoadImg;
+	obj->Render = BaseObject_Render;
+	obj->DrawTile = BaseObject_DrawTile;
+	obj->Free = BaseObject_Free;
 	return obj;
 }
 
 void BaseObject_Destroy(BaseObject* obj)
 {
-	if (obj)
+	if (obj != NULL)
 	{
 		BaseObject_Free(obj);
 	}
 }
-
 
 void BaseObject_SetRect(BaseObject* obj, const int x, const int y)
 {
@@ -70,6 +73,14 @@ void BaseObject_Render(BaseObject* obj, SDL_Renderer* des, const SDL_Rect* clip)
 {
 	SDL_Rect renderquad = { obj->rect_.x, obj->rect_.y, obj->rect_.w, obj->rect_.h };
 	SDL_RenderCopy(des, obj->p_object_, clip, &renderquad);
+}
+
+void BaseObject_DrawTile(SDL_Renderer* des, SDL_Texture *texture, int tileSize, int x, int y, int row, int frame, SDL_RendererFlip flip)
+{
+	SDL_Rect srcRect = { tileSize * frame, tileSize * (row), tileSize, tileSize };
+	SDL_Rect dstRect = { x, y, tileSize , tileSize };
+
+	SDL_RenderCopyEx(des, texture, &srcRect, &dstRect, 0, 0, flip);
 }
 
 void BaseObject_Free(BaseObject* obj) {

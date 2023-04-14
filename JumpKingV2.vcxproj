@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)SDL2\SDL2\include;$(SolutionDir)SDL2\SDL2_image\include;$(SolutionDir)SDL2\SDL2_mixer\include;$(SolutionDir)SDL2\SDL2_ttf\include;$(SolutionDir)source\vectorlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)SDL2\SDL2\lib\x64;$(SolutionDir)SDL2\SDL2_image\lib\x64;$(SolutionDir)SDL2\SDL2_mixer\lib\x64;$(SolutionDir)SDL2\SDL2_ttf\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)SDL2\SDL2\include;$(SolutionDir)SDL2\SDL2_image\include;$(SolutionDir)SDL2\SDL2_mixer\include;$(SolutionDir)SDL2\SDL2_ttf\include;D:\Workspace\Project\library\mysys64\mingw64\include\glib-2.0;D:\Workspace\Project\library\mysys64\mingw64\lib\glib-2.0\include;D:\Workspace\Project\library\mysys64\mingw64\include\libxml2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)SDL2\SDL2\lib\x64;$(SolutionDir)SDL2\SDL2_image\lib\x64;$(SolutionDir)SDL2\SDL2_mixer\lib\x64;$(SolutionDir)SDL2\SDL2_ttf\lib\x64;D:\Workspace\Project\library\mysys64\mingw64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -122,7 +122,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libxml2.dll.a;libglib-2.0.dll.a;SDL2.lib;SDL2main.lib;SDL2test.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,17 +144,34 @@
   <ItemGroup>
     <ClCompile Include="BaseObject.c" />
     <ClCompile Include="CommonFunction.c" />
+    <ClCompile Include="GameMap.c" />
     <ClCompile Include="game_map.c" />
     <ClCompile Include="ImpTimer.c" />
+    <ClCompile Include="Layer.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="MainObject.c" />
+    <ClCompile Include="MapParser.cpp" />
+    <ClCompile Include="TileLayer.c" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="CommonFunction.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="game_map.h" />
     <ClInclude Include="ImpTimer.h" />
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="MainObject.h" />
+    <ClInclude Include="MapParser.h" />
+    <ClInclude Include="TileLayer.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

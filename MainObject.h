@@ -1,15 +1,19 @@
-#ifndef MAIN_OBJECT_H_
+﻿#ifndef MAIN_OBJECT_H_
 #define MAIN_OBJECT_H_
 
 #include "BaseObject.h"
 #include "CommonFunction.h"
+#include <math.h>
 
 #define GRAVITY_SPEED 0.8
-#define MAX_FALL_SPEED 10
-#define PLAYER_SPEED 8
-#define PLAYER_MAX_JUMP_VAL 19
+#define MAX_FALL_SPEED 20
+#define PLAYER_SPEED 7
+#define PLAYER_MAX_JUMP_VAL 25
 #define PLAYER_MIN_JUMP_VAL 10
 
+#define NumPrite 12
+
+// Khai báo biến toàn cục
 typedef struct sMainObject MainObject;
 struct sMainObject {
 	BaseObject base_object;
@@ -37,12 +41,21 @@ struct sMainObject {
 	int width_frame_;
 	int height_frame_;
 
-	SDL_Rect frame_clip_[8];
+	SDL_Rect frame_clip_[NumPrite];
 
 	Input input_type_;
 	int frame_;
 	int status_;
 	bool on_ground_;
+	bool ready_jump_;
+	bool running;
+
+	int collion_wall;
+	float val_respond_collison;
+	float check_collion_wall;
+
+	bool jump_left;
+	bool jump_right;
 
 	int map_x_;
 	int map_y_;

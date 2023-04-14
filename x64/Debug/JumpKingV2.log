@@ -1,26 +1,23 @@
-﻿  BaseObject.c
-  CommonFunction.c
-  game_map.c
-  ImpTimer.c
-  main.c
-  MainObject.c
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(97,42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(98,42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(204,33): warning C4305: '+=': truncation from 'double' to 'float'
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(247,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(255,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(274,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(275,59): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(277,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(278,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(293,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(311,29): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(321,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(322,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(324,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(325,60): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(338,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  MainObject.c
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(111,42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(112,42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(178,33): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(183,25): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(220,38): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(231,38): warning C4305: '+=': truncation from 'double' to 'float'
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(264,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(272,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(291,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(292,59): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(294,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(295,38): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(303,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(315,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(325,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(326,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(328,35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(329,60): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(337,22): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(358,28): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(372,54): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
+D:\Workspace\Project\F-Code\Game\JumpKingV2\MainObject.c(373,54): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   JumpKingV2.vcxproj -> D:\Workspace\Project\F-Code\Game\JumpKingV2\x64\Debug\JumpKingV2.exe

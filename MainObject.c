@@ -1,31 +1,42 @@
-#include "MainObject.h"
- 
-#include "MainObject.h"
+﻿#include "MainObject.h"
+#include <math.h>
+
+#define LOCA_START 170 * 32
 
 MainObject MainObject_Create() {
 
 	MainObject obj;
-	obj.base_object = BaseObject_Create();
+	obj.base_object = *BaseObject_Create();
 	obj.frame_ = 0;
 	obj.x_pos_ = 0;
-	obj.y_pos_ = 0;
+	obj.y_pos_ = LOCA_START;
 	obj.x_val_ = 0;
 	obj.y_val_ = 0;
 	obj.width_frame_ = 0;
 	obj.height_frame_ = 0;
 	obj.status_ = WALK_NONE;
+
 	obj.input_type_.right_ = 0;
 	obj.input_type_.left_ = 0;
 	obj.input_type_.jump_ = 0;
 	obj.input_type_.down_ = 0;
 	obj.input_type_.up_ = 0;
-	obj.on_ground_ = false;
+
+	obj.ready_jump_ = false;
+	obj.running = false;
+	obj.jump_left = false;
+	obj.jump_right = false;
+
+	obj.check_collion_wall = 0;
+	obj.collion_wall = 1;
+
+	obj.on_ground_ = 0; // giá trị phù hợp với kiểu bool
 	obj.map_x_ = 0;
 	obj.map_y_ = 0;
 	obj.come_back_time_ = 0;
-	//obj.present_bullet_ = BulletObject_SPHERE_BULLET;
 	obj.money_count = 0;
-	obj.jump_val_ = PLAYER_MIN_JUMP_VAL;
+	obj.jump_val_ = 0; // giá trị phù hợp với kiểu int
+	obj.val_respond_collison = 0;
 
 	obj.Destroy = MainObject_Destroy;
 	obj.LoadImg = MainObject_LoadImg;
@@ -41,7 +52,7 @@ MainObject MainObject_Create() {
 }
 
 void MainObject_Destroy(MainObject* obj) {
-	if (obj) {
+	if (obj != NULL) {
 		obj->base_object.Free(&obj->base_object);
 		obj->base_object.Destroy(&obj->base_object);
 	}
@@ -59,7 +70,7 @@ bool MainObject_LoadImg(MainObject* obj, const char* path, SDL_Renderer* screen)
 
 
     if (ret == true) {
-        obj->width_frame_ = obj->base_object.rect_.w / 8;
+        obj->width_frame_ = obj->base_object.rect_.w / NumPrite;
         obj->height_frame_ = obj->base_object.rect_.h;
     }
     return ret;
@@ -69,7 +80,7 @@ void MainObject_SetClips(MainObject* obj)
 {
 	if (obj->width_frame_ > 0 && obj->height_frame_ > 0)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < NumPrite; i++)
 		{
 			obj->frame_clip_[i].x = i * obj->width_frame_;
 			obj->frame_clip_[i].y = 0;
@@ -83,13 +94,16 @@ void MainObject_Show(MainObject* obj, SDL_Renderer* des) {
 	obj->UpdateImagePlayer(obj, des);
 	if (obj->input_type_.left_ == 1 ||
 		obj->input_type_.right_ == 1) {
-		obj->frame_++;
+		if (!obj->ready_jump_ && obj->on_ground_)
+		{
+			obj->frame_++;
+		}
 	}
 	else {
 		obj->frame_ = 0;
 	}
 
-	if (obj->frame_ >= 8) {
+	if (obj->frame_ >= NumPrite) {
 		obj->frame_ = 0;
 	}
 
@@ -111,28 +125,20 @@ void MainObject_HandleInputAction(MainObject* obj, SDL_Event events, SDL_Rendere
 		switch (events.key.keysym.sym)
 		{
 		case SDLK_SPACE:
-			obj->jump_val_ += 0.5;
-			if (obj->jump_val_ >= PLAYER_MAX_JUMP_VAL)
-			{
-				obj->jump_val_ = PLAYER_MAX_JUMP_VAL;
-			}
+			if(!obj->ready_jump_) obj->jump_val_ = PLAYER_MIN_JUMP_VAL;
+			obj->ready_jump_ = true;
 			break;
 		case SDLK_RIGHT:
-			obj->status_ = WALK_RIGHT;
 			obj->input_type_.right_ = 1;
 			obj->input_type_.left_ = 0;
+			obj->running = true;
+			if (!obj->ready_jump_) obj->status_ = WALK_RIGHT;
 			break;
 		case SDLK_LEFT:
-			obj->status_ = WALK_LEFT;
 			obj->input_type_.left_ = 1;
 			obj->input_type_.right_ = 0;
-			break;
-		
-		case SDLK_1:
-			//obj->present_bullet_ = BulletObject::SPHERE_BULLET;
-			break;
-		case SDLK_2:
-			//present_bullet_ = BulletObject::LASER_BULLET;
+			obj->running = true;
+			if (!obj->ready_jump_) obj->status_ = WALK_LEFT;
 			break;
 		default:
 			break;
@@ -141,88 +147,100 @@ void MainObject_HandleInputAction(MainObject* obj, SDL_Event events, SDL_Rendere
 	else if (events.type == SDL_KEYUP) {
 		switch (events.key.keysym.sym)
 		{
-		case SDLK_RIGHT:
-			obj->input_type_.right_ = 0;
+		case SDLK_RIGHT:			
+			obj->running = false;
+			obj->input_type_.right_ = 0;	
 			break;
 		case SDLK_LEFT:
+			obj->running = false;
 			obj->input_type_.left_ = 0;
 			break;
 		case SDLK_SPACE:
 			obj->input_type_.jump_ = 1;
+			obj->ready_jump_ = false;
+
+			if (obj->input_type_.left_ == 1) {
+				obj->jump_left = true;
+			}
+			else if (obj->input_type_.right_ == 1) {
+				obj->jump_right = true;
+			}
 			break;
 		default:
 			break;
 		}
 	}
-	if (events.type == SDL_MOUSEBUTTONDOWN) {
-		if (events.button.button == SDL_BUTTON_RIGHT) {
-			obj->input_type_.jump_ = 1;
-		}
-		//else if (events.button.button == SDL_BUTTON_LEFT) {
-		//	BulletObject* p_bullet = new BulletObject();
-		//	p_bullet->set_bulet_type(present_bullet_);
-		//	p_bullet->LoadImgBullet(screen);
-		//	if (status_ == WALK_LEFT) {
-		//		p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
-		//		p_bullet->SetRect(this->rect_.x, this->rect_.y + height_frame_ * 0.25);
-		//	}
-		//	else if (status_ == WALK_RIGHT) {
-		//		p_bullet->set_bullet_dir(BulletObject::DIR_RIGHT);
-		//		p_bullet->SetRect(this->rect_.x + width_frame_ - 20, this->rect_.y + height_frame_ * 0.3);
-		//	}
-		//	p_bullet->set_x_val(20);
-		//	p_bullet->set_y_val(20);
-		//	p_bullet->set_is_move(true);
-		//	p_bullet_list_.push_back(p_bullet);
-		//}
-	}
 }
-
-//void MainObject_HandldeBulle(MainObject* obj, SDL_Renderer* des) {
-//	for (size_t i = 0; i < obj->p_bullet_list_.size(); i++)
-//	{
-//		BulletObject* p_bullet = p_bullet_list_.at(i);
-//		if (p_bullet != NULL) {
-//			if (p_bullet->get_is_move() == true) {
-//				p_bullet->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
-//				p_bullet->Render(des);
-//			}
-//			else {
-//				p_bullet_list_.erase(p_bullet_list_.begin() + i);
-//				if (p_bullet != NULL) {
-//					delete p_bullet;
-//					p_bullet = NULL;
-//				}
-//			}
-//		}
-//	}
-//}
 
 void MainObject_DoPlayer(MainObject* obj, Map* map_data) {
 	if (obj->come_back_time_ == 0) {
 		obj->x_val_ = 0;
 		obj->y_val_ += (GRAVITY_SPEED);
 
+		//Hanlde Set Value Jump 
+		if (obj->ready_jump_)
+		{
+			obj->jump_val_ += 0.4;
+			if (obj->jump_val_ >= PLAYER_MAX_JUMP_VAL) {
+				obj->jump_val_ = PLAYER_MAX_JUMP_VAL;
+			}
+		}
+
+		//Chechk Max Fall Speedc
 		if (obj->y_val_ >= MAX_FALL_SPEED) {
 			obj->y_val_ = MAX_FALL_SPEED;
 		}
-
-		if (obj->input_type_.left_ == 1) {
-			obj->x_val_ -= PLAYER_SPEED;
+		if (obj->on_ground_)
+		{
+			if (obj->input_type_.left_ == 1 && !obj->ready_jump_) {
+				obj->x_val_ -= PLAYER_SPEED;
+			}
+			else if (obj->input_type_.right_ == 1 && !obj->ready_jump_) {
+				obj->x_val_ += PLAYER_SPEED;
+			}
 		}
-		else if (obj->input_type_.right_ == 1) {
-			obj->x_val_ += PLAYER_SPEED;
-		}
 
+		//Handle jumping
 		if (obj->input_type_.jump_ == 1) {
 			if (obj->on_ground_ == true) {
-				obj->y_val_ = -obj->jump_val_;
 				obj->on_ground_ = false;
-				obj->jump_val_ = PLAYER_MIN_JUMP_VAL;
+				obj->y_val_ = -obj->jump_val_; 
+				obj->jump_val_ = 0;
+				//obj->jump_val_ = PLAYER_MIN_JUMP_VAL;
 			}
 			obj->input_type_.jump_ = 0;
 		}
 
+		// Handle jumping left or right
+		if ((obj->jump_left || obj->jump_right) && !obj->on_ground_) {
+			if (obj->jump_left) {
+				obj->x_val_ -= PLAYER_SPEED * obj->collion_wall;
+				
+				if (obj->check_collion_wall == 1) {
+					obj->val_respond_collison += 0.2;
+					obj->x_val_ += (obj->val_respond_collison) * obj->collion_wall;
+					if (obj->val_respond_collison >= PLAYER_SPEED) {
+						obj->val_respond_collison = PLAYER_SPEED;
+					}
+				}
+			}
+			else if (obj->jump_right) {
+				obj->x_val_ += PLAYER_SPEED * obj->collion_wall;
+				
+				if (obj->check_collion_wall == 1) {
+					obj->val_respond_collison += 0.2;
+					obj->x_val_ -= (obj->val_respond_collison) * obj->collion_wall;
+					if (obj->val_respond_collison >= PLAYER_SPEED) {
+						obj->val_respond_collison = PLAYER_SPEED;
+					}
+				}
+			}
+		}
+		else {
+			obj->jump_left = false;
+			obj->jump_right = false;
+		}
+		
 		obj->CheckToMap(obj, map_data);
 		obj->CenterEntityOnMap(obj, map_data);
 	}
@@ -236,9 +254,8 @@ void MainObject_DoPlayer(MainObject* obj, Map* map_data) {
 			else {
 				obj->x_pos_ = 0;
 			}
-			obj->y_pos_ = 0;
+			obj->y_pos_ = LOCA_START;
 			obj->x_val_ = 0;
-			obj->y_val_ = 0;
 		}
 	}
 }
@@ -279,40 +296,27 @@ void MainObject_CheckToMap(MainObject* obj, Map* map_data) {
 
 	if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 <= MAX_MAP_Y) {
 		if (obj->x_val_ > 0) {
-
 			int val1 = map_data->tile[y1][x2];
 			int val2 = map_data->tile[y2][x2];
 
-			if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
-				map_data->tile[y1][x2] = 0;
-				map_data->tile[y2][x2] = 0;
-				MainObject_IncreaseMoney(obj);
-			}
-			else {
-				if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
-					obj->x_pos_ = x2 * TILE_SIZE;
-					obj->x_pos_ -= obj->width_frame_ + 1;
-					obj->x_val_ = 0;
-				}
+			if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
+				obj->x_pos_ = x2 * TILE_SIZE;
+				obj->x_pos_ -= obj->width_frame_ + 1;
+				obj->x_val_ = 0;
+				obj->collion_wall *= -1;
+				obj->check_collion_wall = 1;
 			}
 		}
 		else if (obj->x_val_ < 0) {
 			int val1 = map_data->tile[y1][x1];
 			int val2 = map_data->tile[y2][x1];
 
-			if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
-				map_data->tile[y1][x1] = 0;
-				map_data->tile[y2][x1] = 0;
-				MainObject_IncreaseMoney(obj);
+			if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
+				obj->x_pos_ = (x1 + 1) * TILE_SIZE;
+				obj->x_val_ = 0;
+				obj->collion_wall *= -1;
+				obj->check_collion_wall = 1;
 			}
-
-			else {
-				if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
-					obj->x_pos_ = (x1 + 1) * TILE_SIZE;
-					obj->x_val_ = 0;
-				}
-			}
-
 		}
 	}
 
@@ -329,47 +333,46 @@ void MainObject_CheckToMap(MainObject* obj, Map* map_data) {
 			int val1 = map_data->tile[y2][x1];
 			int val2 = map_data->tile[y2][x2];
 
-			if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
-				map_data->tile[y2][x1] = 0;
-				map_data->tile[y2][x2] = 0;
-				MainObject_IncreaseMoney(obj);
-			}
-			else if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
+			if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
 				obj->y_pos_ = y2 * TILE_SIZE;
-				obj->y_pos_ -= obj->height_frame_ + 1;
+				obj->y_pos_ -= obj->height_frame_ - 3;
 				obj->y_val_ = 0;
 				obj->on_ground_ = true;
+				obj->collion_wall = 1;
+				obj->check_collion_wall = 0;
+				obj->val_respond_collison = 0;
 
 				if (obj->status_ == WALK_NONE) {
 					obj->status_ = WALK_RIGHT;
 				}
+			}
+			else {
+				obj->on_ground_ = false;
 			}
 		}
 		else if (obj->y_val_ < 0) {
 			int val1 = map_data->tile[y1][x1];
 			int val2 = map_data->tile[y1][x2];
 
-			if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
-				map_data->tile[y1][x1] = 0;
-				map_data->tile[y1][x2] = 0;
-				MainObject_IncreaseMoney(obj);
-			}
-			else if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
+			if (val1 != BLANK_TILE || val2 != BLANK_TILE) {
 				obj->y_pos_ = (y1 + 1) * TILE_SIZE;
 				obj->y_val_ = 0;
 			}
 		}
 	}
 
-
 	obj->x_pos_ += obj->x_val_;
 	obj->y_pos_ += obj->y_val_;
 
 	if (obj->x_pos_ < 0) {
 		obj->x_pos_ = 0;
+		obj->collion_wall *= -1;
+		obj->check_collion_wall = 1;
 	}
 	else if (obj->x_pos_ + obj->width_frame_ > map_data->max_x_) {
 		obj->x_pos_ = map_data->max_x_ - obj->width_frame_ - 1;
+		obj->collion_wall *= -1;
+		obj->check_collion_wall = 1;
 	}
 
 	if (obj->y_pos_ > map_data->max_y_) {
@@ -377,25 +380,21 @@ void MainObject_CheckToMap(MainObject* obj, Map* map_data) {
 	}
 }
 
-void MainObject_IncreaseMoney(MainObject* obj) {
-	obj->money_count++;
-}
-
 void MainObject_UpdateImagePlayer(MainObject* obj, SDL_Renderer* des) {
 	if (obj->on_ground_) {
 		if (obj->status_ == WALK_LEFT) {
-			obj->base_object.LoadImg(&obj->base_object, "img/player sprite/player_left.png", des);
+			obj->base_object.LoadImg(&obj->base_object, "img/MainObject/MoveLeft.png", des);
 		}
 		else {
-			obj->base_object.LoadImg(&obj->base_object, "img/player sprite/player_right.png", des);
+			obj->base_object.LoadImg(&obj->base_object, "img/MainObject/MoveRight.png", des);
 		}
 	}
 	else {
 		if (obj->status_ == WALK_LEFT) {
-			obj->base_object.LoadImg(&obj->base_object, "img/player sprite/jum_left.png", des);
+			obj->base_object.LoadImg(&obj->base_object, "img/MainObject/JumpLeft.png", des);
 		}
 		else {
-			obj->base_object.LoadImg(&obj->base_object, "img/player sprite/jum_right.png", des);
+			obj->base_object.LoadImg(&obj->base_object, "img/MainObject/JumpRight.png", des);
 		}
 	}
 }
