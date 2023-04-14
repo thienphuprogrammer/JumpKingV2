@@ -12,7 +12,7 @@ extern "C" {
 
 typedef struct _MapParser MapParser;
 struct _MapParser {
-    gboolean(*Load)(MapParser*);
+    gboolean(*Load)(MapParser*, const char*);
     GameMap* (*GetMap)(MapParser*, const char*);
     gboolean(*Parse)(MapParser*, gchar*, gchar*);
     Tileset (*ParseTileset)(TiXmlElement*);
@@ -37,7 +37,7 @@ extern "C" {
 extern "C" MapParser * MapParser_create();
 extern "C" void MapParser_clean(MapParser* parser);
 
-extern "C" gboolean MapParser_Load(MapParser* parser);
+extern "C" gboolean MapParser_Load(MapParser* parser, const char* source);
 extern "C" gboolean MapParser_Parse(MapParser* parser, gchar* id, gchar* source);
 extern "C" Tileset MapParser_ParseTileset(TiXmlElement * xmlTileset);
 extern "C" TileLayer * MapParser_ParseTileLayer(TiXmlElement * xmlLayer, TilesetList * tilesets, int tilesize, int rowcount, int colcount);

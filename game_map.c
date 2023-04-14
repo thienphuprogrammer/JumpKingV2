@@ -73,38 +73,51 @@ void GameMapp_LoadTiles(GameMapp* obj, SDL_Renderer* screen) {
 }
 
 void GameMapp_DrawMap(GameMapp* obj, SDL_Renderer* des, GameMap* LeMap) {
-    int x1 = 0;
-    int x2 = 0;
+    for (GList* layer_node = LeMap->m_MapLayers; layer_node != NULL; layer_node = layer_node->next) {
+        TileLayer* layer = (TileLayer*)layer_node->data;
+        int x1 = 0;
+        int x2 = 0;
 
-    int y1 = 0;
-    int y2 = 0;
+        int y1 = 0;
+        int y2 = 0;
 
-    int map_x = 0;
-    int map_y = 0;
+        int map_x = 0;
+        int map_y = 0;
 
-    map_x = obj->game_map_.start_x_ / TILE_SIZE;
-    x1 = (obj->game_map_.start_x_ % TILE_SIZE) * -1;
-    x2 = x1 + SCREEN_WIDTH + (x1 == 0 ? 0 : TILE_SIZE);
-
-    map_y = obj->game_map_.start_y_ / TILE_SIZE;
-    y1 = (obj->game_map_.start_y_ % TILE_SIZE) * -1;
-    y2 = y1 + SCREEN_HEIGHT + (y1 == 0 ? 0 : TILE_SIZE);
-
-    for (int i = y1; i < y2; i += TILE_SIZE) {
         map_x = obj->game_map_.start_x_ / TILE_SIZE;
-        for (int j = x1; j < x2; j += TILE_SIZE) {
-            int val = obj->game_map_.tile[map_y][map_x];
-            if (val > 0) {
-              /*  obj->tile_mat[val].base_object.SetRect(&obj->tile_mat[val].base_object, j, i);
-                obj->tile_mat[val].base_object.Render(&obj->tile_mat[val].base_object, des, NULL);*/
-                for (GList* layer_node = LeMap->m_MapLayers; layer_node != NULL; layer_node = layer_node->next) {
-                    TileLayer* layer = (TileLayer*)layer_node->data;
+        x1 = (obj->game_map_.start_x_ % TILE_SIZE) * -1;
+        x2 = x1 + SCREEN_WIDTH + (x1 == 0 ? 0 : TILE_SIZE);
+
+        map_y = obj->game_map_.start_y_ / TILE_SIZE;
+        y1 = (obj->game_map_.start_y_ % TILE_SIZE) * -1;
+        y2 = y1 + SCREEN_HEIGHT + (y1 == 0 ? 0 : TILE_SIZE);
+
+
+       /* for (int i = 0; i < layer->m_RowCount; i++)
+        {
+            for (int j = 0; j < layer->m_ColCount; j++)
+            {
+                int tileID = ((int)g_ptr_array_index(layer->m_Tilemap, i * layer->m_ColCount + j));
+                printf("%d ", tileID);
+            }
+            printf("\n");
+        }
+        printf("\n");*/
+
+        for (int i = y1; i < y2; i += TILE_SIZE) {
+            map_x = obj->game_map_.start_x_ / TILE_SIZE;
+            for (int j = x1; j < x2; j += TILE_SIZE) {
+                int val = obj->game_map_.tile[map_y][map_x];
+                if (val > 0) {
+                    /*  obj->tile_mat[val].base_object.SetRect(&obj->tile_mat[val].base_object, j, i);
+                      obj->tile_mat[val].base_object.Render(&obj->tile_mat[val].base_object, des, NULL);*/
+
 
                     layer->Render(layer, val, i, j);
                 }
+                map_x++;
             }
-            map_x++;
+            map_y++;
         }
-        map_y++;
     }
 }

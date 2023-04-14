@@ -8,6 +8,12 @@
 
 const int MENU_START = 0;
 const int MENU_QUIT = 1;
+
+#define GAME_MAP_1 2
+#define GAME_MAP_2 3
+
+int lv_game_map = GAME_MAP_1;
+
 const int RENDER_DRAW_COLOR = 0xff;
 
 BaseObject g_background;
@@ -20,7 +26,7 @@ extern "C"
 #endif
 typedef struct _MapParser MapParser;
 MapParser* m_MapParser;
-gboolean MapParser_Load(MapParser* parser);
+gboolean MapParser_Load(MapParser* parser, const char* source);
 void MapParser_clean(MapParser* parser);
 GameMap* MapParser_GetMap(MapParser* parser, const gchar* id);
 void MapParser_clean(MapParser* parser);
@@ -104,10 +110,14 @@ int selectMenu()
 
     TextObject text_start_ = TextObject_Init(); //TextObject lop doi tuong
     TextObject text_quit_ = TextObject_Init(); //TextObject lop doi tuong
-
+    TextObject text_game_1 = TextObject_Init(); //TextObject lop doi tuong
+    TextObject text_game_2 = TextObject_Init(); //TextObject lop doi tuong
 
     TextObject_SetText(&text_start_, "Start!!");
     TextObject_SetText(&text_quit_, "Quit!!");
+    TextObject_SetText(&text_game_1, "Game Map 1");
+    TextObject_SetText(&text_game_2, "Game Map 2");
+
     text_start_.SetColorByType(&text_start_, BLACK_TEXT);
     text_start_.SetColorByType(&text_quit_, BLACK_TEXT);
 
@@ -122,12 +132,10 @@ int selectMenu()
         g_background_menu.Render(&g_background_menu, g_screen, NULL);
 
         TextObject_loadFromRenderedText(&text_start_, g_font, g_screen);
-        text_start_.RenderText(&text_start_, g_screen, 840, 220, NULL, 0.0, NULL, SDL_FLIP_NONE);
+        text_start_.RenderText(&text_start_, g_screen, 840, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
         TextObject_loadFromRenderedText(&text_quit_, g_font, g_screen);
-        text_quit_.RenderText(&text_quit_, g_screen, 852, 290, NULL, 0.0, NULL, SDL_FLIP_NONE);
-
-
+        text_quit_.RenderText(&text_quit_, g_screen, 840, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
         while (SDL_PollEvent(&g_event) != 0)
         {
             switch (g_event.type)
@@ -146,12 +154,12 @@ int selectMenu()
                     if (SDL_PointInRect(&mouse_point_button, &pos_text_start_button))
                     {
                         TextObject_SetColorByType(&text_start_, RED_TEXT);
-                        return 0;
+                        return MENU_START;
                     }
                     else if (SDL_PointInRect(&mouse_point_button, &pos_text_quit_button))
                     {
                         TextObject_SetColorByType(&text_quit_, RED_TEXT);
-                        return 1;
+                        return MENU_QUIT;
                     }
                 }
                 break;
@@ -171,6 +179,7 @@ int selectMenu()
                     {
                         TextObject_SetColorByType(&text_start_, BLACK_TEXT);
                     }
+
                     if (SDL_PointInRect(&mouse_motton, &pose_text_quit_motton))
                     {
                         TextObject_SetColorByType(&text_quit_, RED_TEXT);
@@ -179,6 +188,8 @@ int selectMenu()
                     {
                         TextObject_SetColorByType(&text_quit_, BLACK_TEXT);
                     }
+
+     
                 }
                 break;
             }
@@ -207,11 +218,18 @@ int main(int argc, char* argv[]) {
     p_player.LoadImg(&p_player, "img/MainObject/MoveRight.png", g_screen);
     p_player.set_clips(&p_player);
 
+   
+    bool is_quit = false;
+
+    int menu = selectMenu();
+    
+
     GameMap* m_LevelMap;
 
-    if (!MapParser_Load(m_MapParser)) {
+    if (!MapParser_Load(m_MapParser, "assets/maps/level1.tmx")) {
         printf("Failed to load map\n");
     }
+   
     m_LevelMap = MapParser_GetMap(m_MapParser, "MAP");
     TileLayer* liMap = m_LevelMap->m_MapLayers->data;
 
@@ -220,8 +238,7 @@ int main(int argc, char* argv[]) {
     game_map.LoadMap(&game_map, liMap);
     //game_map.LoadTiles(&game_map, g_screen);
 
-    bool is_quit = false;
-    if (selectMenu() == 1)
+    if (menu == 1)
     {
         is_quit = true;
     }

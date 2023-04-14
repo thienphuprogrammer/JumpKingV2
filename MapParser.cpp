@@ -23,8 +23,8 @@ extern "C" MapParser* MapParser_create() {
     return parser;
 }
 
-extern "C" gboolean MapParser_Load(MapParser* parser) {
-    return parser->Parse(parser, (gchar*)"MAP", (gchar*)"assets/maps/level1.tmx");
+extern "C" gboolean MapParser_Load(MapParser* parser, const char *source) {
+    return parser->Parse(parser, (gchar*)"MAP", (gchar*)source);
 }
 
 extern "C" gboolean MapParser_Parse(MapParser * parser, gchar * id, gchar * source) {
