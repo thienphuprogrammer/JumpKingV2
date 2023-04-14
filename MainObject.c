@@ -165,6 +165,8 @@ void MainObject_HandleInputAction(MainObject* obj, SDL_Event events, SDL_Rendere
 			else if (obj->input_type_.right_ == 1) {
 				obj->jump_right = true;
 			}
+			obj->input_type_.right_ = 0;
+			obj->input_type_.left_ = 0;
 			break;
 		default:
 			break;
